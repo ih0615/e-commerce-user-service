@@ -3,7 +3,9 @@ package com.example.userservice.mapper;
 import com.example.userservice.dto.UserDto;
 import com.example.userservice.repository.UserEntity;
 import com.example.userservice.vo.RequestUser;
+import com.example.userservice.vo.ResponseOrder;
 import com.example.userservice.vo.ResponseUser;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -26,6 +28,8 @@ public abstract class UserMapper {
     public abstract UserEntity dtoToEntity(UserDto dto);
 
     public abstract UserDto entityToDto(UserEntity entity);
+
+    public abstract UserDto entityToDto(UserEntity entity, List<ResponseOrder> orders);
 
     public abstract ResponseUser dtoToVo(UserDto dto);
 
