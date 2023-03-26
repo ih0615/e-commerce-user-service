@@ -1,8 +1,10 @@
 package com.example.userservice.config;
 
+import com.example.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -19,6 +21,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurity {
 
     private final AuthenticationConfiguration authenticationConfiguration;
+    private final UserService userService;
+    private final Environment env;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -40,7 +44,7 @@ public class WebSecurity {
             .antMatchers("/**")
             .hasIpAddress("14.45.21.75")
             .and()
-            .addFilterAt(new AuthenticationFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class)
+            .addFilterAt(new AuthenticationFilter(userService, env, authenticationManager()), UsernamePasswordAuthenticationFilter.class)
             .headers().frameOptions().disable()
             .and()
             .build();

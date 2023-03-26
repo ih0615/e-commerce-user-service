@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +29,7 @@ public class UserController {
     private final Greeting greeting;
     private final UserService userService;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping("/heath_check")
     public String status() {
@@ -44,6 +46,7 @@ public class UserController {
     public ResponseEntity<ResponseUser> createUser(@RequestBody RequestUser user) {
 
         UserDto userDto = userMapper.voToDto(user);
+        userDto.setEncryptedPwd(passwordEncoder.encode(userDto.getPwd()));
 
         userService.createUser(userDto);
 

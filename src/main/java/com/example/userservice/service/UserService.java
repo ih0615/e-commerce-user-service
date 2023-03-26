@@ -10,4 +10,6 @@ public interface UserService {
     UserDto getUserByUserId(String userId);
 
     List<UserDto> getUserByAll();
+
+    UserDto getUserDetailsByEmail(String userName);
 }

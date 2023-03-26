@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final Environment env;
 
     @Override
     public UserDto createUser(UserDto userDto) {
@@ -41,5 +43,12 @@ public class UserServiceImpl implements UserService {
         return userEntities.stream()
             .map(entity -> userMapper.entityToDto(entity, Collections.emptyList()))
             .collect(Collectors.toList());
+    }
+
+    @Override
+    public UserDto getUserDetailsByEmail(String userName) {
+        UserEntity userEntity = userRepository.findByEmail(userName)
+            .orElseThrow(() -> new UsernameNotFoundException("User not Exist"));
+        return userMapper.entityToDto(userEntity);
     }
 }
